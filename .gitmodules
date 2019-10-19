@@ -1,0 +1,3 @@
+[submodule "odoo-argentina"]
+	path = odoo-argentina
+	url = https://github.com/ingadhoc/odoo-argentina.git
