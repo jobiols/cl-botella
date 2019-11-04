@@ -18,7 +18,7 @@
 #
 # -----------------------------------------------------------------------------
 {
-    'name': 'botella',
+    'name': 'Botella',
     'version': '12.0e.0.0.0',
     'license': 'Other OSI approved licence',
     'category': 'Default Application',
@@ -27,19 +27,13 @@
     'author': 'jeo Software',
     'depends': [
         # basic applications
-        #'sale_management',
+        'sale_management',
         #'account_invoicing',
         #'purchase',
-        #'mrp',
 
         # minimum modules for argentinian localizacion + utilities + fixes
-        #'standard_depends_ee',
+        'standard_depends_ee',
 
-        # desarrollo especifico para amic
-        # 'customer_product_names',  # nombres de prod <> por cliente
-        # 'mrp_lot_attributes'  # caracteristicas de trazabilidad
-
-        # utilitarios
     ],
     'data': [
     ],
@@ -53,10 +47,9 @@
     # port where odoo starts serving pages
     'port': '8069',
 
-    # example repos version 1
     'repos': [
-
         {'usr': 'jobiols', 'repo': 'cl-botella', 'branch': '12.0'},
+        {'usr': 'jobiols', 'repo': 'odoo-addons', 'branch': '12.0'},
 
         {'usr': 'ingadhoc', 'repo': 'odoo-argentina', 'branch': '12.0'},
         {'usr': 'ingadhoc', 'repo': 'argentina-sale', 'branch': '12.0'},
@@ -82,7 +75,6 @@
         {'usr': 'oca', 'repo': 'management-system', 'branch': '12.0'},
         {'usr': 'oca', 'repo': 'sale-workflow', 'branch': '12.0'},
         {'usr': 'oca', 'repo': 'stock-logistics-warehouse', 'branch': '12.0'},
-
     ],
 
     'docker': [
