@@ -33,7 +33,6 @@
 
         # minimum modules for argentinian localizacion + utilities + fixes
         'standard_depends_ee',
-
     ],
     'data': [
     ],
@@ -82,5 +81,4 @@
         {'name': 'postgres', 'usr': 'postgres', 'ver': '10.1-alpine'},
         {'name': 'aeroo', 'usr': 'adhoc', 'img': 'aeroo-docs'},
     ],
-
 }
