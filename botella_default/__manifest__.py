@@ -74,7 +74,6 @@
         {'usr': 'oca', 'repo': 'server-tools', 'branch': '12.0'},
         {'usr': 'oca', 'repo': 'social', 'branch': '12.0'},
         {'usr': 'oca', 'repo': 'server-ux', 'branch': '12.0'},
-        {'usr': 'oca', 'repo': 'server-brand', 'branch': '12.0'},
         {'usr': 'oca', 'repo': 'manufacture', 'branch': '12.0'},
         {'usr': 'oca', 'repo': 'manufacture-reporting', 'branch': '12.0'},
         {'usr': 'oca', 'repo': 'management-system', 'branch': '12.0'},
