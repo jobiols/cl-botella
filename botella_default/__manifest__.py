@@ -67,6 +67,7 @@
         {'usr': 'ingadhoc', 'repo': 'product', 'branch': '12.0'},
         {'usr': 'ingadhoc', 'repo': 'stock', 'branch': '12.0'},
         {'usr': 'ingadhoc', 'repo': 'account-invoicing', 'branch': '12.0'},
+        {'usr': 'ingadhoc', 'repo': 'enterprise-extensions', 'branch': '12.0'},
 
         {'usr': 'oca', 'repo': 'partner-contact', 'branch': '12.0'},
         {'usr': 'oca', 'repo': 'web', 'branch': '12.0'},
