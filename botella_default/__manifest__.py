@@ -28,13 +28,13 @@
     'depends': [
         # basic applications
         'sale_management',
-        #'account_invoicing',
-        #'purchase',
 
         # minimum modules for argentinian localizacion + utilities + fixes
         'standard_depends_ee',
-        'base_currency_inverse_rate',
 
+        # additional modules for this instance
+        'base_currency_inverse_rate',
+        'l10n_ar_currency_update',
     ],
     'data': [
     ],
