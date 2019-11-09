@@ -23,7 +23,7 @@
     'license': 'Other OSI approved licence',
     'category': 'Default Application',
     'summary': 'Customization for Botella',
-    "development_status": "Alpha",
+    "development_status": "Beta",
     'author': 'jeo Software',
     'depends': [
         # basic applications
