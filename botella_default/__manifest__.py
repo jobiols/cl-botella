@@ -47,6 +47,8 @@
         # additional modules for this instance
         'base_currency_inverse_rate',
         'l10n_ar_currency_update',
+        'l10n_ar_aeroo_stock',
+        'sale_commission'
     ],
     'data': [
     ],
@@ -80,6 +82,7 @@
         {'usr': 'ingadhoc', 'repo': 'stock', 'branch': '12.0'},
         {'usr': 'ingadhoc', 'repo': 'account-invoicing', 'branch': '12.0'},
         {'usr': 'ingadhoc', 'repo': 'enterprise-extensions', 'branch': '12.0'},
+        {'usr': 'ingadhoc', 'repo': 'website', 'branch': '12.0'},
 
         {'usr': 'oca', 'repo': 'partner-contact', 'branch': '12.0'},
         {'usr': 'oca', 'repo': 'web', 'branch': '12.0'},
@@ -92,6 +95,7 @@
         {'usr': 'oca', 'repo': 'sale-workflow', 'branch': '12.0'},
         {'usr': 'oca', 'repo': 'stock-logistics-warehouse', 'branch': '12.0'},
         {'usr': 'oca', 'repo': 'stock-logistics-workflow', 'branch': '12.0'},
+        {'usr': 'oca', 'repo': 'commission', 'branch': '12.0'},
     ],
 
     'docker': [
