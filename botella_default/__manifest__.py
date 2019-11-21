@@ -37,11 +37,11 @@
         'stock',
 
         # eliminados para travis
-        #'web_studio',
-        #'website_event',
-        #'mass_mailing',
-        #'marketing_automation',
-        #'documents',
+        # 'web_studio',
+        # 'website_event',
+        # 'mass_mailing',
+        # 'marketing_automation',
+        # 'documents',
 
         # minimum modules for argentinian localizacion + utilities + fixes
         'standard_depends_ee',

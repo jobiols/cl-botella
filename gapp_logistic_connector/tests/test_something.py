@@ -12,7 +12,7 @@
 #   [nombre cliente]_test_[nombre modulo] que debe estar vacia pero con el
 #   modulo que se quiere testear instalado.
 #
-#   Debe tener usuario admin y password admin
+#   Debe tener usuario admin y password admin y demo data
 #
 #   Arrancar el test con:
 #
@@ -23,23 +23,14 @@ from odoo.tests.common import TransactionCase
 
 
 class SomethingCase(TransactionCase):
-#    def setUp(self, *args, **kwargs):
-#        super(SomethingCase, self).setUp(*args, **kwargs)
-#
-#        # TODO Replace this for something useful or delete this method
-#        self.do_something_before_all_tests()
-#
-#    def tearDown(self, *args, **kwargs):
-#        # TODO Replace this for something useful or delete this method
-#        self.do_something_after_all_tests()
-#
-#        return super(SomethingCase, self).tearDown(*args, **kwargs)
-#
-    def test_something(self):
-        """First line of docstring appears in test logs.
+    def setUp(self, *args, **kwargs):
+        super(SomethingCase, self).setUp(*args, **kwargs)
 
-        Other lines do not.
+    def tearDown(self, *args, **kwargs):
 
-        Any method starting with ``test_`` will be tested.
+        return super(SomethingCase, self).tearDown(*args, **kwargs)
+
+    def test_01_something(self):
+        """TEST 01 First line of docstring appears in test logs.
         """
-        self.assertEquanssss(1, 21)
+        self.assertEqual(1, 1)
