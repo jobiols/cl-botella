@@ -19,6 +19,7 @@
     "excludes": [],
     "depends": [
         "base",
+        'stock'
     ],
     "data": [
     ],
