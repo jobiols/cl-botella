@@ -65,6 +65,8 @@
     'repos': [
         {'usr': 'jobiols', 'repo': 'cl-botella', 'branch': '12.0'},
         {'usr': 'jobiols', 'repo': 'odoo-addons', 'branch': '12.0'},
+        {'usr': 'jobiols', 'repo': 'odoo-com', 'branch': '12.0',
+         'host': 'bitbucket.org', 'ssh': True},
 
         {'usr': 'ingadhoc', 'repo': 'odoo-argentina', 'branch': '12.0'},
         {'usr': 'ingadhoc', 'repo': 'argentina-sale', 'branch': '12.0'},
