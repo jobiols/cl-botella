@@ -1,5 +1,4 @@
-[ This file must be max 2-3 paragraphs, and is required. ]
+Este modulo permite conectar odoo con gapp logistica mediante el envio de un
+archivo de texto plano attachado a un mail.
 
-This module extends the functionality of ... to support ...
-and to allow you to ...
 
