@@ -22,6 +22,7 @@
         'stock'
     ],
     "data": [
+        'views/stock_picking_view.xml'
     ],
     "demo": [
     ],

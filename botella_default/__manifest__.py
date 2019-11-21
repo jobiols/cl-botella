@@ -34,12 +34,14 @@
         'account',
         'purchase',
         # Accounting
-        'web_studio',
         'stock',
-        'website_event',
-        'mass_mailing',
-        'marketing_automation',
-        'documents',
+
+        # eliminados para travis
+        #'web_studio',
+        #'website_event',
+        #'mass_mailing',
+        #'marketing_automation',
+        #'documents',
 
         # minimum modules for argentinian localizacion + utilities + fixes
         'standard_depends_ee',
