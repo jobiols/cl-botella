@@ -22,6 +22,7 @@
         'stock'
     ],
     "data": [
+        'data/mail_template_data.xml',
         'views/stock_picking_view.xml'
     ],
     "demo": [
