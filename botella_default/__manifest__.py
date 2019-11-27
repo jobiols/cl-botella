@@ -50,7 +50,8 @@
         'base_currency_inverse_rate',
         'l10n_ar_currency_update',
         'l10n_ar_aeroo_stock',
-        'sale_commission'
+        'sale_commission',
+        'mailgun'
     ],
     'data': [
     ],
@@ -100,6 +101,7 @@
         {'usr': 'oca', 'repo': 'stock-logistics-warehouse', 'branch': '12.0'},
         {'usr': 'oca', 'repo': 'stock-logistics-workflow', 'branch': '12.0'},
         {'usr': 'oca', 'repo': 'commission', 'branch': '12.0'},
+        {'usr': 'it-projects-llc', 'repo': 'mail-addons', 'branch': '12.0'},
     ],
 
     'docker': [
