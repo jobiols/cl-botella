@@ -22,8 +22,6 @@ class StockPicking(models.Model):
                                                 'stock.picking', self.id)
         self = self.with_context(lang=lang)
 
-        import wdb;wdb.set_trace()
-
         datas = self.encode_data_file()
 
         attachment = self.env['ir.attachment'].create({
@@ -63,7 +61,7 @@ class StockPicking(models.Model):
             # 2. Letra del comprobante que respalda el pedido. Ej:”A”
             origin = self.origin
             sale_order_obj = self.env['sale.order']
-            so = sale_order_obj.search([('name', '=', 'origin')])
+            so = sale_order_obj.search([('name', '=', origin)])
             if not so:
                 raise exceptions.UserError(_('No se puede encontrar la orden '
                                              'de venta relacionada con este '
@@ -84,7 +82,7 @@ class StockPicking(models.Model):
             # 5. Código del cliente/sucursal a la que pertenece el pedido.
             ref = self.partner_id.ref
             try:
-                int(ref)
+                ref = int(ref)
             except:
                 raise exceptions.UserError(_('La referencia del cliente debe '
                                              'ser un numero'))
@@ -116,11 +114,11 @@ class StockPicking(models.Model):
 
             # 10. Nombre de la localidad asociada a la dirección del
             # destinatario.
-            city = self.partner_id.street2 +' '+ self.partner_id.state_id.name
+            city = self.partner_id.street2 or '' + ' ' + self.partner_id.state_id.name or ''
             cols.append('{}'.format(city))
 
             # 11. Código de provincia asociada a la dirección del destinatario.
-            provincia = self.encode_state(self.partner_id.state_id.code)
+            provincia = self.encode_state(self.partner_id.state_id.code or '')
             if provincia:
                 cols.append('{}'.format(provincia))
             else:
@@ -145,7 +143,7 @@ class StockPicking(models.Model):
             cols.append('{}'.format(default_code))
 
             # 15. Cantidad solicitada del producto en el registro vigente.
-            qty = line.qty
+            qty = line.product_qty
             cols.append('{:010.3f}'.format(qty))
 
             # 16. Lote particular al cual debe pertenecer el producto
