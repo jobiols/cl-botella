@@ -3,7 +3,7 @@
 
 import base64
 from datetime import date
-from odoo import models, api, exceptions, _
+from odoo import models, exceptions, _
 
 
 class StockPicking(models.Model):
