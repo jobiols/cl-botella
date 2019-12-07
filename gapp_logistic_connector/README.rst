@@ -22,8 +22,6 @@ Conector GAPP Logistica
 Este modulo permite conectar odoo con gapp logistica mediante el envio de un
 archivo de texto plano attachado a un mail.
 
-
-
 .. IMPORTANT::
    This is an alpha version, the data model and design can change at any time without warning.
    Only for development or testing purpose, do not use in production.
@@ -33,35 +31,6 @@ archivo de texto plano attachado a un mail.
 
 .. contents::
    :local:
-
-Configuration
-=============
-
-[ This file is optional, it should explain how to configure
-  the module before using it; it is aimed at advanced users. ]
-
-To configure this module, you need to:
-
-#. Go to ...
-
-.. figure:: https://raw.githubusercontent.com/jobiols/cl-botella/12.0/gapp_logistic_connector/static/description/image.png
-   :alt: alternative description
-   :width: 600 px
-
-Usage
-=====
-
-[ This file must be present and contains the usage instructions
-  for end-users. As all other rst files included in the README,
-  it MUST NOT contain reStructuredText sections
-  only body text (paragraphs, lists, tables, etc). Should you need
-  a more elaborate structure to explain the addon, please create a
-  Sphinx documentation (which may include this file as a "quick start"
-  section). ]
-
-To use this module, you need to:
-
-#. Go to ...
 
 Bug Tracker
 ===========
@@ -85,17 +54,6 @@ Contributors
 ~~~~~~~~~~~~
 
 * Jorge Obiols <jorge.obiols@gmail.com> (www.jeosoft.com.ar)
-
-Other credits
-~~~~~~~~~~~~~
-
-[ This file is optional and contains additional credits, other than
-  authors, contributors, and maintainers. ]
-
-The development of this module has been financially supported by:
-
-* Company 1 name
-* Company 2 name
 
 Maintainers
 ~~~~~~~~~~~

@@ -3,7 +3,8 @@
 
 import base64
 from datetime import date
-from odoo import models, fields, api, exceptions, _
+from odoo import models, api, exceptions, _
+
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
@@ -114,7 +115,8 @@ class StockPicking(models.Model):
 
             # 10. Nombre de la localidad asociada a la dirección del
             # destinatario.
-            city = self.partner_id.street2 or '' + ' ' + self.partner_id.state_id.name or ''
+            city = self.partner_id.street2 or ''
+            city += ' ' + self.partner_id.state_id.name or ''
             cols.append('{}'.format(city))
 
             # 11. Código de provincia asociada a la dirección del destinatario.

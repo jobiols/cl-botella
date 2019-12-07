@@ -102,9 +102,10 @@
         {'usr': 'oca', 'repo': 'stock-logistics-workflow', 'branch': '12.0'},
         {'usr': 'oca', 'repo': 'commission', 'branch': '12.0'},
         {'usr': 'oca', 'repo': 'l10n-netherlands', 'branch': '12.0'},
-        {'usr': 'oca', 'repo': 'account-financial-reporting', 'branch': '12.0'},
-#        {'usr': 'it-projects-llc', 'repo': 'mail-addons', 'branch': '12.0'},
-        {'usr': 'it-projects-llc', 'repo': 'misc-addons', 'branch': '12.0'}, # Backup to S3 / google
+        {'usr': 'oca', 'repo': 'account-financial-reporting',
+         'branch': '12.0'},
+        # backup to s3
+        {'usr': 'it-projects-llc', 'repo': 'misc-addons', 'branch': '12.0'},
     ],
 
     'docker': [
