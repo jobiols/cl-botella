@@ -28,7 +28,7 @@ class StockPicking(models.Model):
         attachment = self.env['ir.attachment'].create({
             'name': self.data_filename(),
             'datas': base64.b64encode(datas),
-            'datas_fname': 'GAPP.txt',
+            'datas_fname': self.data_filename(),
             'res_model': 'stock.picking',
             'res_id': self.id,
         })
@@ -46,8 +46,17 @@ class StockPicking(models.Model):
         today = date.today()
         return '{:09}_{}.TXT'.format(self.id, today.strftime('%d%m%Y'))
 
-    def encode_state(self, state_id):
-        return 'BUE'
+    @staticmethod
+    def encode_state(state_id):
+        # el 564 es La Rioja y no esta en la spec.
+        codes = {
+            553: 'BA', 554: 'BUE', 555: 'CAT', 556: 'CHA', 557: 'CHU',
+            558: 'COR', 559: 'CRR', 560: 'ENT', 561: 'FOR', 562: 'JUJ',
+            563: 'PAM', 564: '???', 565: 'MEN', 566: 'MIS', 567: 'NEU',
+            568: 'RIO', 569: 'SAL', 570: 'SNJ', 571: 'SNL', 572: 'SCR',
+            573: 'SFE', 574: 'SES', 575: 'TIE', 576: 'TUC'
+        }
+        return codes.get(state_id, False)
 
     def encode_data_file(self):
         """ Codificar archivo para GAPP
@@ -117,10 +126,10 @@ class StockPicking(models.Model):
             # destinatario.
             city = self.partner_id.street2 or ''
             city += ' ' + self.partner_id.state_id.name or ''
-            cols.append('{}'.format(city))
+            cols.append('{}'.format(city.strip()))
 
             # 11. Código de provincia asociada a la dirección del destinatario.
-            provincia = self.encode_state(self.partner_id.state_id.code or '')
+            provincia = self.encode_state(self.partner_id.state_id.id or False)
             if provincia:
                 cols.append('{}'.format(provincia))
             else:
