@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright <YEAR(S)> <AUTHOR(S)>
+<!-- Copyright 2019 jeo Software
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
 
 <openerp>
@@ -7,7 +7,7 @@
 
 <record id="gapp_mail_template" model="mail.template">
     <field name="name">Mail programatico para GAPP</field>
-            <field name="model_id" ref="base.model_res_users"/>
+            <field name="model_id" ref="base.model_res_partner"/>
             <field name="subject">Nuevo movimiento de stock</field>
             <field name="email_from">${('"%s" &lt;%s&gt;' % (object.company_id.name, object.company_id.email or user.email))|safe}</field>
             <field name="email_to">${object.email_formatted | safe}</field>
