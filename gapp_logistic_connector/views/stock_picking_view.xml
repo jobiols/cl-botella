@@ -14,7 +14,9 @@
                 <xpath expr="//button[@name='action_toggle_is_locked']"
                        position="after">
                     <button name="send_to_gapp" type="object" string="Enviar a GAPP"
-                            class="oe_highlight"/>
+                            class="oe_highlight"
+                            attrs="{'invisible': ['|',('state', '!=', 'assigned'), ('picking_type_code', '!=', 'outgoing')]}"
+                    />
                 </xpath>
 
             </field>
