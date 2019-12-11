@@ -45,6 +45,7 @@
                         If you do not expect this, you can safely ignore this email.<br/><br/>
                         Thanks,<br/>
                         ${user.signature | safe}<br/>
+                        <strong>NOTA:</strong> En la version de protocolo que tenemos "Versión template: 3.1", no esta definido el código de la provincia de La Rioja en el apartado 5.1. Tabla de relación de Códigos de provincias. Esperamos actualización de ese documento.
                     </div>
                 </td></tr>
                 <tr><td style="text-align:center;">
