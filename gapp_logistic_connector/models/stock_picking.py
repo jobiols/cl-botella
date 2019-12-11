@@ -61,14 +61,15 @@ class StockPicking(models.Model):
     def encode_data_file(self):
         """ Codificar archivo para GAPP
         """
-        import wdb;wdb.set_trace()
+        import wdb;
+        wdb.set_trace()
 
         datas = b''
         # chequear que cada linea tiene al menos un lote
         for line in self.move_lines:
             if not line.move_line_ids:
-                raise UserWarning('No hay lotes definidos para el '
-                                  'producto %s' % line.product_id.name)
+                raise exceptions.UserError('No hay lotes definidos para el '
+                                           'producto %s' % line.product_id.name)
 
         for line in self.move_lines:
             for lot in line.move_line_ids:
@@ -82,14 +83,14 @@ class StockPicking(models.Model):
                 sale_order_obj = self.env['sale.order']
                 so = sale_order_obj.search([('name', '=', origin)])
                 if not so:
-                    raise exceptions.UserError(_('No se puede encontrar la orden '
-                                                 'de venta relacionada con este '
-                                                 'envio.'))
+                    raise exceptions.UserError(_('No se puede encontrar la '
+                                                 'orden de venta relacionada '
+                                                 'con este envio.'))
 
                 if not (so.invoice_ids and so.invoice_ids[0]):
                     raise exceptions.UserError(_('No se puede encontrar la '
-                                                 'factura de venta que respalda '
-                                                 'este envio.'))
+                                                 'factura de venta que '
+                                                 'respalda este envio.'))
 
                 letter = so.invoice_ids[0].document_letter_name
                 cols.append('{}'.format(letter))
@@ -97,7 +98,8 @@ class StockPicking(models.Model):
                 # 3. Centro Emisor (Uso Interno) Siempre = “001”
                 cols.append('001')
 
-                # 4. Numero de pedido. El numero que representa al pedido registro.
+                # 4. Numero de pedido. El numero que representa al pedido
+                # del registro.
                 cols.append('{:010}'.format(self.id))
 
                 # 5. Código del cliente/sucursal a la que pertenece el pedido.
@@ -105,8 +107,8 @@ class StockPicking(models.Model):
                 try:
                     ref = int(ref)
                 except:
-                    raise exceptions.UserError(_('La referencia del cliente debe '
-                                                 'ser un numero'))
+                    raise exceptions.UserError(_('La referencia del cliente '
+                                                 'debe ser un numero entero'))
                 cols.append('{:010}'.format(ref))
 
                 # 6. Es la fecha propuesta de entrega al cliente.
@@ -116,8 +118,8 @@ class StockPicking(models.Model):
                 else:
                     cols.append('')
 
-                # 7. Nombre o razón social asociado al campo 5, que representa al
-                # destinatario del pedido.
+                # 7. Nombre o razón social asociado al campo 5, que representa
+                # al destinatario del pedido.
                 name = self.partner_id.name
                 cols.append('{}'.format(name))
 
@@ -127,26 +129,36 @@ class StockPicking(models.Model):
 
                 # 9. Nombre de la calle y altura asociado a la dirección del
                 # destinatario.
-                street = self.partner_id.street or ''
+                street = self.partner_id.street
+                if not street:
+                    raise exceptions.UserError('El cliente %s no tiene '
+                                               'direccion (calle y nro)' %
+                                               self.partner_id.name)
                 cols.append('{}'.format(street))
 
                 # 10. Nombre de la localidad asociada a la dirección del
                 # destinatario.
                 city = self.partner_id.street2 or ''
                 city += ' ' + (self.partner_id.state_id.name or '')
+                if not city:
+                    raise exceptions.UserError('El cliente %s no tiene '
+                                               'localidad %s' %
+                                               self.partner_id.name)
                 cols.append('{}'.format(city.strip()))
 
-                # 11. Código de provincia asociada a la dirección del destinatario.
-                provincia = self.encode_state(self.partner_id.state_id.id or False)
+                # 11. Código de provincia asociada a la dirección del
+                # destinatario.
+                provincia = self.encode_state(self.partner_id.state_id.id or
+                                              False)
                 if provincia:
                     cols.append('{}'.format(provincia))
                 else:
                     cols.append('')
 
-                # 12. Peso asociado a la cantidad de productos de la línea actual
-                # del archivo. Ej: Si se solicitan 10 unidades  del producto
-                # 000001, que el peso individual es 2.5 kilos, el valor
-                # será = 25.000 (veinticinco con 3 ceros decimales).
+                # 12. Peso asociado a la cantidad de productos de la línea
+                # actual del archivo. Ej: Si se solicitan 10 unidades  del
+                # producto 000001, que el peso individual es 2.5 kilos, el
+                # valor será = 25.000 (veinticinco con 3 ceros decimales).
                 peso = lot.product_id.weight * lot.product_uom_qty
                 if peso:
                     cols.append('{0:0.3f}'.format(peso))
@@ -198,6 +210,5 @@ class StockPicking(models.Model):
                 line_data = ';'.join(cols)
 
                 datas += b'%s\r\n' % bytes(line_data, encoding='utf8')
-
 
         return datas
