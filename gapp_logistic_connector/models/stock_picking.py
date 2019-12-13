@@ -70,6 +70,8 @@ class StockPicking(models.Model):
 
         # procesar los datos y devolver una lista de lineas que corresponde
         # a un solo archivo
+        ids = []
+
         for ix, gapp_file in enumerate(self.split_file(gapp_data)):
             datas = b''.join(gapp_file)
 
@@ -80,8 +82,9 @@ class StockPicking(models.Model):
                 'res_model': 'stock.picking',
                 'res_id': self.id,
             })
+            ids.append(attachment.id)
 
-        template_id.attachment_ids = [(4, attachment.id)]
+        template_id.attachment_ids = [(6, 0, ids)]
         gapp = self.env['res.partner'].search([('ref', '=', 'gapp')])
 
         if not gapp:
@@ -129,7 +132,7 @@ class StockPicking(models.Model):
                 cols = list()
 
                 # 1. Código del propietario del LOTE/ARCHIVO.
-                cols.append('RANDOM')
+                cols.append('BOTELLA')
 
                 # 2. Letra del comprobante que respalda el pedido. Ej:”A”
                 origin = self.origin
