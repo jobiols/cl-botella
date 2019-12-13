@@ -9,6 +9,46 @@ from odoo import models, exceptions, _
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
+    def split_file(self, file):
+        """ llega en data una lista de todos los productos a enviar, hay que
+            partirla en listas con el siguiente criterio:
+            no se pueden repetir los productos, que es el item 13 de la lista
+            line = lista con los elementos de una linea del archivo
+            file = lista con las lineas de un archivo
+            data = lista con todos los archivos
+        """
+        data = list()
+
+        def get_default_code(line):
+            """ dada una linea del archivo devuelve el codigo de producto
+            """
+            return line.split(b';')[13]
+
+        def line_in_file(ln, file):
+            """ dada una linea y un archivo devuelve True si el archivo
+                contiene la linea
+            """
+            default_code = get_default_code(ln)
+            for line in file:
+                if default_code == get_default_code(line):
+                    return True
+            return False
+
+        def insert_in_data(ln):
+            """ Inserta la linea en un archivo en el que no esta, de manera
+                que no se repita.
+            """
+            for file in data:
+                if not line_in_file(ln, file):
+                    file.append(ln)
+                    return
+            data.append([ln])
+
+        for line in file:
+            insert_in_data(line)
+
+        return data
+
     def send_to_gapp(self):
         """ Enviar el archivo attachado a GAPP
         """
@@ -23,28 +63,43 @@ class StockPicking(models.Model):
                                                 'stock.picking', self.id)
         self = self.with_context(lang=lang)
 
-        datas = self.encode_data_file()
+        # obtengo una lista con los datos de cada linea de envio pueden estar
+        # repetidos los productos porque hay dos lineas iguales o porque tienen
+        # lotes distintos
+        gapp_data = self.encode_data_file()
 
-        attachment = self.env['ir.attachment'].create({
-            'name': self.data_filename(),
-            'datas': base64.b64encode(datas),
-            'datas_fname': self.data_filename(),
-            'res_model': 'stock.picking',
-            'res_id': self.id,
-        })
+        # procesar los datos y devolver una lista de lineas que corresponde
+        # a un solo archivo
+        for ix, gapp_file in enumerate(self.split_file(gapp_data)):
+            datas = b''.join(gapp_file)
+
+            attachment = self.env['ir.attachment'].create({
+                'name': self.data_filename(ix),
+                'datas': base64.b64encode(datas),
+                'datas_fname': self.data_filename(ix),
+                'res_model': 'stock.picking',
+                'res_id': self.id,
+            })
 
         template_id.attachment_ids = [(4, attachment.id)]
         gapp = self.env['res.partner'].search([('ref', '=', 'gapp')])
 
-        # enviar el mail con el attach
-        template_id.send_mail(gapp.id, raise_exception=False, force_send=True)
+        if not gapp:
+            raise exceptions.UserError('No existe el partner GAPP o no tiene '
+                                       'cargada la referencia gapp')
 
-    def data_filename(self):
+        # enviar el mail con el attach
+        template_id.sudo().send_mail(gapp.id,
+                                     raise_exception=True,
+                                     force_send=True)
+
+    def data_filename(self, ix):
         """ Genera el nombre para el archivo GAPP
             NNNNNNNNN_DDMMYYYY
         """
         today = date.today()
-        return '{:09}_{}.TXT'.format(self.id, today.strftime('%d%m%Y'))
+        number = self.id * 100 + ix
+        return '{:09}_{}.TXT'.format(number, today.strftime('%d%m%Y'))
 
     @staticmethod
     def encode_state(state_id):
@@ -61,15 +116,13 @@ class StockPicking(models.Model):
     def encode_data_file(self):
         """ Codificar archivo para GAPP
         """
-        import wdb;
-        wdb.set_trace()
-
-        datas = b''
+        datas = list()
         # chequear que cada linea tiene al menos un lote
         for line in self.move_lines:
             if not line.move_line_ids:
                 raise exceptions.UserError('No hay lotes definidos para el '
-                                           'producto %s' % line.product_id.name)
+                                           'producto %s' %
+                                           line.product_id.name)
 
         for line in self.move_lines:
             for lot in line.move_line_ids:
@@ -121,15 +174,18 @@ class StockPicking(models.Model):
                 # 7. Nombre o razón social asociado al campo 5, que representa
                 # al destinatario del pedido.
                 name = self.partner_id.name
+                name = name.replace(';', ' ')
                 cols.append('{}'.format(name))
 
                 # 8. Código postal asociado a la dirección del destinatario.
                 zipcode = self.partner_id.zip or ''
+                zipcode = zipcode.replace(';', ' ')
                 cols.append('{}'.format(zipcode))
 
                 # 9. Nombre de la calle y altura asociado a la dirección del
                 # destinatario.
                 street = self.partner_id.street
+                street = street.replace(';', ' ')
                 if not street:
                     raise exceptions.UserError('El cliente %s no tiene '
                                                'direccion (calle y nro)' %
@@ -140,11 +196,13 @@ class StockPicking(models.Model):
                 # destinatario.
                 city = self.partner_id.street2 or ''
                 city += ' ' + (self.partner_id.state_id.name or '')
+                city = city.replace(';', ' ')
+                city = city.strip()
                 if not city:
                     raise exceptions.UserError('El cliente %s no tiene '
-                                               'localidad %s' %
+                                               'localidad' %
                                                self.partner_id.name)
-                cols.append('{}'.format(city.strip()))
+                cols.append('{}'.format(city))
 
                 # 11. Código de provincia asociada a la dirección del
                 # destinatario.
@@ -167,10 +225,12 @@ class StockPicking(models.Model):
 
                 # 13. Una observación asociada al pedido.
                 obs = self.note or ''
+                obs = obs.replace(';', ' ')
                 cols.append('{}'.format(obs))
 
                 # 14. Código del producto solicitado.
                 default_code = lot.product_id.default_code
+                default_code = default_code.replace(';', ' ')
                 if default_code:
                     cols.append('{}'.format(default_code))
                 else:
@@ -185,6 +245,7 @@ class StockPicking(models.Model):
                 # solicitado.
 
                 lot_name = lot.lot_id.name
+                lot_name = lot_name.replace(';', ' ')
                 cols.append('{}'.format(lot_name))
 
                 # 17. Código seriado del producto solicitado. NO SE USA
@@ -208,7 +269,8 @@ class StockPicking(models.Model):
                     cols.append('')
 
                 line_data = ';'.join(cols)
-
-                datas += b'%s\r\n' % bytes(line_data, encoding='utf8')
+                line_data = b'%s\r\n' % bytes(line_data, encoding='utf8')
+                #datas += b'%s\r\n' % bytes(line_data, encoding='utf8')
+                datas.append(line_data)
 
         return datas
