@@ -70,6 +70,7 @@
         {'usr': 'jobiols', 'repo': 'odoo-addons', 'branch': '12.0'},
         {'usr': 'jobiols', 'repo': 'odoo-com', 'branch': '12.0',
          'host': 'bitbucket.org', 'ssh': True},
+        {'usr': 'jobiols', 'repo': 'enterprise-extensions', 'branch': '12.0'},
 
         {'usr': 'ingadhoc', 'repo': 'odoo-argentina', 'branch': '12.0'},
         {'usr': 'ingadhoc', 'repo': 'argentina-sale', 'branch': '12.0'},
@@ -86,7 +87,6 @@
         {'usr': 'ingadhoc', 'repo': 'product', 'branch': '12.0'},
         {'usr': 'ingadhoc', 'repo': 'stock', 'branch': '12.0'},
         {'usr': 'ingadhoc', 'repo': 'account-invoicing', 'branch': '12.0'},
-        {'usr': 'ingadhoc', 'repo': 'enterprise-extensions', 'branch': '12.0'},
         {'usr': 'ingadhoc', 'repo': 'website', 'branch': '12.0'},
 
         {'usr': 'oca', 'repo': 'partner-contact', 'branch': '12.0'},
