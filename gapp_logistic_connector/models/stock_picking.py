@@ -9,7 +9,8 @@ from odoo import models, exceptions, _
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
-    def split_file(self, file):
+    @staticmethod
+    def split_file(file):
         """ llega en data una lista de todos los productos a enviar, hay que
             partirla en listas con el siguiente criterio:
             no se pueden repetir los productos, que es el item 13 de la lista
