@@ -273,7 +273,7 @@ class StockPicking(models.Model):
 
                 line_data = ';'.join(cols)
                 line_data = b'%s\r\n' % bytes(line_data, encoding='utf8')
-                #datas += b'%s\r\n' % bytes(line_data, encoding='utf8')
+                # datas += b'%s\r\n' % bytes(line_data, encoding='utf8')
                 datas.append(line_data)
 
         return datas

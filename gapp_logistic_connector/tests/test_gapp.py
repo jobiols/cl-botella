@@ -28,13 +28,13 @@ class TestCase(TransactionCase):
         """ TESTEAR todos los productos distintos
         """
         # articulo original
-        line1 = b'RANDOM;A;001;0000000014;0000000123;12/12/2019;Guerrini;1405;Diaz Velez 4565;;;;;00003020191505;000050.000;548795600;;000050.000\r\n'
+        line1 = b'RANDOM;A;001;0000000014;0000000123;12/12/2019;Guerrini;1405;Diaz Velez 4565;;;;;00003020191505;000050.000;548795600;;000050.000\r\n'  # noqa
         # mismo articulo debe ir en otro archivo
-        line2 = b'RANDOM;A;001;0000000014;0000000123;12/12/2019;Guerrini;1405;Diaz Velez 4565;;;;;10003020191505;000050.000;548795600;;000050.000\r\n'
+        line2 = b'RANDOM;A;001;0000000014;0000000123;12/12/2019;Guerrini;1405;Diaz Velez 4565;;;;;10003020191505;000050.000;548795600;;000050.000\r\n'  # noqa
         # mismo articulo otro lote debe ir en otro archivo
-        line3 = b'RANDOM;A;001;0000000014;0000000123;12/12/2019;Guerrini;1405;Diaz Velez 4565;;;;;20003020191505;000050.000;548795600;;000050.000\r\n'
+        line3 = b'RANDOM;A;001;0000000014;0000000123;12/12/2019;Guerrini;1405;Diaz Velez 4565;;;;;20003020191505;000050.000;548795600;;000050.000\r\n'  # noqa
         # distinto articulo y lote se queda en el mismo archivo
-        line4 = b'RANDOM;A;001;0000000014;0000000123;12/12/2019;Guerrini;1405;Diaz Velez 4565;;;;;30003020191505;000050.000;548795600;;000050.000\r\n'
+        line4 = b'RANDOM;A;001;0000000014;0000000123;12/12/2019;Guerrini;1405;Diaz Velez 4565;;;;;30003020191505;000050.000;548795600;;000050.000\r\n'  # noqa
 
         file = list()
         file.append(line1)
@@ -51,13 +51,13 @@ class TestCase(TransactionCase):
         """ TESTEAR se generan dos archivos
         """
         # articulo original
-        line1 = b'RANDOM;A;001;0000000014;0000000123;12/12/2019;Guerrini;1405;Diaz Velez 4565;;;;;00003020191505;000050.000;548795600;;000050.000\r\n'
+        line1 = b'RANDOM;A;001;0000000014;0000000123;12/12/2019;Guerrini;1405;Diaz Velez 4565;;;;;00003020191505;000050.000;548795600;;000050.000\r\n'  # noqa
         # mismo articulo debe ir en otro archivo
-        line2 = b'RANDOM;A;001;0000000014;0000000123;12/12/2019;Guerrini;1405;Diaz Velez 4565;;;;;10003020191505;000050.000;548795600;;000050.000\r\n'
+        line2 = b'RANDOM;A;001;0000000014;0000000123;12/12/2019;Guerrini;1405;Diaz Velez 4565;;;;;10003020191505;000050.000;548795600;;000050.000\r\n'  # noqa
         # mismo articulo otro lote debe ir en otro archivo
-        line3 = b'RANDOM;A;001;0000000014;0000000123;12/12/2019;Guerrini;1405;Diaz Velez 4565;;;;;00003020191505;000050.000;548795600;;000050.000\r\n'
+        line3 = b'RANDOM;A;001;0000000014;0000000123;12/12/2019;Guerrini;1405;Diaz Velez 4565;;;;;00003020191505;000050.000;548795600;;000050.000\r\n'  # noqa
         # distinto articulo y lote se queda en el mismo archivo
-        line4 = b'RANDOM;A;001;0000000014;0000000123;12/12/2019;Guerrini;1405;Diaz Velez 4565;;;;;30003020191505;000050.000;548795600;;000050.000\r\n'
+        line4 = b'RANDOM;A;001;0000000014;0000000123;12/12/2019;Guerrini;1405;Diaz Velez 4565;;;;;30003020191505;000050.000;548795600;;000050.000\r\n'  # noqa
 
         file = list()
         file.append(line1)
