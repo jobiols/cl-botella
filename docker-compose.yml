@@ -1,0 +1,98 @@
+# Compose file odoo botella
+# Version 2019-01-07
+
+version: '3.5'
+
+services:
+  traefik:
+    image: traefik:2.0.4
+    container_name: traefik
+    restart: unless-stopped
+    command:
+      - --entrypoints.web.address=:80
+      - --entryPoints.websecure.address=:443
+      - --log.level=DEBUG
+      - --log.format=json
+      - --providers.docker
+      - --api.insecure # Don't do that in production
+      - --api.debug
+
+      - --certificatesresolvers.le.acme.email=umansantiago@yahoo.es
+#      - --certificatesresolvers.le.acme.email=jorge.obiols@gmail.com
+      - --certificatesresolvers.le.acme.storage=/opt/traefik/acme.json
+      - --certificatesresolvers.le.acme.httpChallenge=true
+      - --certificatesresolvers.le.acme.httpChallenge.entryPoint=web
+#      - --certificatesresolvers.le.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /odoo_ar/traefik/acme.json:/opt/traefik/acme.json
+
+  aeroo:
+    image: jobiols/aeroo-docs
+    container_name: aeroo
+    restart: unless-stopped
+
+  pg-botella:
+    image: postgres:10.1-alpine
+    container_name: pg-botella
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo
+    volumes:
+      - /odoo_ar/odoo-12.0e/botella/postgresql/:/var/lib/postgresql/data
+
+  sv-odoo:
+    image: jobiols/odoo-ent:12.0e
+    container_name: nm-odoo
+    restart: unless-stopped
+    volumes:
+      - /odoo_ar/odoo-12.0e/botella/config:/opt/odoo/etc/
+      - /odoo_ar/odoo-12.0e/botella/data_dir:/opt/odoo/data
+      - /odoo_ar/odoo-12.0e/botella/log:/var/log/odoo
+      - /odoo_ar/odoo-12.0e/botella/sources:/opt/odoo/custom-addons
+      - /odoo_ar/odoo-12.0e/botella/backup_dir:/var/odoo/backups/
+    links:
+      - pg-botella:db
+      - aeroo:aeroo
+    environment:
+      - SERVER_MODE=
+      - ODOO_CONF=/dev/null
+
+    labels:
+
+      - traefik.http.routers.rou-odoo.rule=Host(`botellasas.com`) || Host(`lacavadecervezas.com`) || Host(`lacavaescondida.com`)
+      - traefik.http.routers.rou-odoo.entrypoints=web
+
+        #      - traefik.http.routers.rou-chat.rule=(Host(`botellasas.com`) || Host(`lacavadecervezas.com`) || Host(`lacavaescondida.com`)) && PathPrefix(`/longpolling`)
+        #      - traefik.http.routers.rou-chat.entrypoints=web
+
+      # comprime las paginas.
+      - traefik.http.middlewares.compress.compress=true
+
+      # redireccion http -> https
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true
+      - traefik.http.routers.rou-odoo.middlewares=redirect-to-https@docker
+      - traefik.http.routers.rou-chat.middlewares=redirect-to-https@docker
+
+      - traefik.http.routers.rou-odoo-secure.rule=Host(`botellasas.com`) || Host(`lacavadecervezas.com`) || Host(`lacavaescondida.com`)
+      - traefik.http.routers.rou-odoo-secure.tls=true
+      - traefik.http.routers.rou-odoo-secure.tls.certresolver=le
+      - traefik.http.routers.rou-odoo-secure.entrypoints=websecure
+      # redirecciona al puerto 8069 de odoo
+      - traefik.http.routers.rou-odoo-secure.service=srv-odoo-secure
+      - traefik.http.services.srv-odoo-secure.loadbalancer.server.port=8069
+
+        #      - traefik.http.routers.rou-chat-secure.rule=(Host(`botellasas.com`) || Host(`lacavadecervezas.com`) || Host(`lacavaescondida.com`)) && PathPrefix(`/longpolling`)
+        #      - traefik.http.routers.rou-chat-secure.tls=true
+        #      - traefik.http.routers.rou-chat-secure.tls.certresolver=le
+        #      - traefik.http.routers.rou-chat-secure.entrypoints=websecure
+      # redirecciona al puerto 8072
+      #      - traefik.http.routers.rou-chat-secure.service=srv-chat-secure
+      #      - traefik.http.services.srv-chat-secure.loadbalancer.server.port=8072
+
